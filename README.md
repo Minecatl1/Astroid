@@ -52,3 +52,28 @@ POST JSON to `http://<host>:<port>/stoat/message`:
 Notes:
 - `endpoint` is optional; if omitted, `STOAT_DEFAULT_ENDPOINT` is used.
 - Bridge forwards into Astroid API: `POST /update/{endpoint}` with `sender=stoat`.
+
+## Run with Docker
+
+Build and run with Docker Compose:
+
+```bash
+docker compose up --build -d
+```
+
+This starts the container with:
+- `BOT_SCRIPT=stoat_bridge.py` (default)
+- `./src/Bot/config.py` mounted to `/app/config.py`
+- port `8080` exposed for the bridge API
+
+### Run a different bot script
+
+Override `BOT_SCRIPT` to run another file copied into the image:
+
+```bash
+docker run --rm \
+  -e BOT_SCRIPT=discord.py \
+  -v $(pwd)/src/Bot/config.py:/app/config.py:ro \
+  astroid:latest
+```
+
