@@ -1,0 +1,11 @@
+services:
+  astroid-bot:
+    build: .
+    container_name: astroid-bot
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./src/Bot/config.py:/app/config.py:ro
+    environment:
+      - BOT_SCRIPT=stoat_bridge.py

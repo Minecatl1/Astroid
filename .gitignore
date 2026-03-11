@@ -1,0 +1,6 @@
+__pycache__/
+.env
+.venv/
+*.pyc
+
+nerimity_bridge_state.json
