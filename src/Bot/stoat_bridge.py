@@ -21,7 +21,7 @@ import config
 
 @dataclass(frozen=True)
 class BridgeConfig:
-    endpoint_token: str
+    master_token: str
     default_endpoint: str
     bridge_host: str = "0.0.0.0"
     bridge_port: int = 8080
@@ -29,11 +29,11 @@ class BridgeConfig:
 
     @classmethod
     def from_config(cls) -> "BridgeConfig":
-        endpoint_token = str(getattr(config, "STOAT_ENDPOINT_TOKEN", "")).strip()
+        master_token = config.MASTER_TOKEN.strip()
         default_endpoint = str(getattr(config, "STOAT_DEFAULT_ENDPOINT", "")).strip()
 
-        if not endpoint_token:
-            raise RuntimeError("STOAT_ENDPOINT_TOKEN is required.")
+        if not master_token:
+            raise RuntimeError("MASTER_TOKEN is required.")
         if not default_endpoint:
             raise RuntimeError("STOAT_DEFAULT_ENDPOINT is required.")
 
@@ -48,7 +48,7 @@ class BridgeConfig:
         ).rstrip("/")
 
         return cls(
-            endpoint_token=endpoint_token,
+            master_token=master_token,
             default_endpoint=default_endpoint,
             bridge_host=host,
             bridge_port=int(port_raw),
@@ -75,7 +75,7 @@ async def send_to_astroid_api(
         "message_author_id": author_id,
         "trigger": "true",
         "sender": "stoat",
-        "token": bridge_config.endpoint_token,
+        "token": bridge_config.master_token,
         "sender_channel": sender_channel,
     }
     if attachments:

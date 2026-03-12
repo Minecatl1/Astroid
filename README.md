@@ -21,7 +21,7 @@ pip install -r requirements.txt
 
 ## Stoat bridge configuration (`src/Bot/config.py`)
 
-- `STOAT_ENDPOINT_TOKEN`: Astroid endpoint token used for `/update/{endpoint}`
+- `MASTER_TOKEN`: Astroid master token used for `/update/{endpoint}`
 - `STOAT_DEFAULT_ENDPOINT`: fallback endpoint ID for Stoat messages
 - `STOAT_API_BASE`: Astroid API base (default `https://api.astroid.cc`)
 - `STOAT_BRIDGE_HOST`: bind host (default `0.0.0.0`)
@@ -51,7 +51,7 @@ POST JSON to `http://<host>:<port>/stoat/message`:
 
 Notes:
 - `endpoint` is optional; if omitted, `STOAT_DEFAULT_ENDPOINT` is used.
-- Bridge forwards into Astroid API: `POST /update/{endpoint}` with `sender=stoat` and endpoint `token`.
+- Bridge forwards into Astroid API: `POST /update/{endpoint}` with `sender=stoat`.
 
 ## Run with Docker
 
@@ -76,48 +76,4 @@ docker run --rm \
   -v $(pwd)/src/Bot/config.py:/app/config.py:ro \
   astroid:latest
 ```
-
-## Nerimity bot configuration (endpoint-token only)
-
-`src/Bot/nerimity_bot.py` now forwards messages using only endpoint credentials:
-
-- `NERIMITY_TOKEN`: Nerimity bot token
-- `NERIMITY_ENDPOINT`: Astroid endpoint ID to update
-- `NERIMITY_ENDPOINT_TOKEN`: token for that endpoint
-
-Notes:
-- The bot uses endpoint credentials only (`NERIMITY_ENDPOINT`, `NERIMITY_ENDPOINT_TOKEN`).
-- Messages are forwarded only from monitored channels.
-- Webhook routes can forward messages from a Nerimity channel to other platforms (for example Discord webhook URLs).
-
-Commands (Nerimity):
-- `a!monitor-add [channel_id]` — add channel to monitored list (defaults to current channel)
-- `a!monitor-remove [channel_id]` — remove channel from monitored list
-- `a!monitor-list` — list monitored channels
-- `a!webhook-add <webhook_url>` — add webhook route for current channel
-- `a!webhook-remove [webhook_url]` — remove one route or all routes for current channel
-- `a!webhook-list` — list webhook routes for current channel
-
-Additional config:
-- `NERIMITY_BRIDGE_STATE_FILE`: local JSON file for monitored channels + webhook routes
-
-## Resolving Git conflicts for this branch
-
-If GitHub reports conflicts in these files:
-
-- `.gitignore`
-- `README.md`
-- `src/Bot/.config.py`
-- `src/Bot/config.py`
-- `src/Bot/nerimity_bot.py`
-- `src/Bot/stoat_bridge.py`
-
-You can resolve them from command line after starting the merge/rebase:
-
-```bash
-bash scripts/resolve_merge_conflicts.sh
-```
-
-This script prefers **this branch's version** (`--ours`) for the known conflict set,
-stages them, and tells you if any additional files still need manual resolution.
 
