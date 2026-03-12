@@ -101,3 +101,23 @@ Commands (Nerimity):
 Additional config:
 - `NERIMITY_BRIDGE_STATE_FILE`: local JSON file for monitored channels + webhook routes
 
+## Resolving Git conflicts for this branch
+
+If GitHub reports conflicts in these files:
+
+- `.gitignore`
+- `README.md`
+- `src/Bot/.config.py`
+- `src/Bot/config.py`
+- `src/Bot/nerimity_bot.py`
+- `src/Bot/stoat_bridge.py`
+
+You can resolve them from command line after starting the merge/rebase:
+
+```bash
+bash scripts/resolve_merge_conflicts.sh
+```
+
+This script prefers **this branch's version** (`--ours`) for the known conflict set,
+stages them, and tells you if any additional files still need manual resolution.
+
